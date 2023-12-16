@@ -10,6 +10,9 @@ document.addEventListener('DOMContentLoaded', () => {
         width: window.innerWidth,
         height: window.innerHeight
     };
+
+    const CLOCK = new THREE.Clock();
+
     // Create the scene.
     const scene = new THREE.Scene();
     const group = new THREE.Group()
@@ -18,10 +21,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const geometry = new THREE.BoxGeometry(1, 1, 1);
     const material = new THREE.MeshBasicMaterial({color: 'purple'});
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.y = -1;
-    mesh.scale.x = 2;
-    mesh.rotation.x = Math.PI * 0.25;
-    mesh.rotation.y = Math.PI * 1.25;
+    mesh.position.y = 1;
+    mesh.position.x = 0;
+    mesh.scale.x = 1;
+    // mesh.rotation.x = Math.PI * 0.25;
+    // mesh.rotation.y = Math.PI * 1.25;
 
 
     const geometry2 = new THREE.BoxGeometry(1, 1, 1);
@@ -29,9 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const mesh2 = new THREE.Mesh(geometry2, material2);
     mesh2.position.y = 2;
 
-    group.add(mesh, mesh2);
-    group.position.x = 1;
-    scene.add(group);
+    // group.add(mesh, mesh2);
+    // group.position.x = 1;
+    scene.add(mesh);
 
     // AxesHelper
     const axesHelper = new THREE.AxesHelper(4);
@@ -49,8 +53,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // Renderer
-    const canvas = document.getElementById('my-canvas');
+    const canvas = document.getElementById('canvas'); // get the canvas element
     const renderer = new THREE.WebGLRenderer({canvas}); // canvas is the canvas element in the html file
     renderer.setSize(ASPECT_RATIO.width, ASPECT_RATIO.height); // set the size of the renderer to the size of the window
-    renderer.render(scene, camera); // render the scene and the camera
+
+
+    const animate = () => {
+        const elapsedTime = CLOCK.getElapsedTime();
+        mesh.rotation.y = elapsedTime * Math.PI ;
+
+        renderer.render(scene, camera); //  draws the scene in the canvas
+        window.requestAnimationFrame(animate);
+    }
+    animate();
 });
